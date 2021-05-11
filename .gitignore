@@ -32,7 +32,7 @@ build/
 
 ### build ###
 
-.gradle
+gradle/
 .gradle/
 **/build/
 !src/**/build/
