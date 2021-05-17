@@ -32,7 +32,7 @@ class OrderServiceTest {
     void 상품주문() {
         //  given
         Member member = createMember();
-        Item book = createBook("JPA", 10000, 10);
+        Item book = createBook("JPA", 10000, 10, "hello", "123");
 
         int orderCount = 2;
 
@@ -52,7 +52,7 @@ class OrderServiceTest {
     void 주문취소() {
         //  given
         Member member = createMember();
-        Item book = createBook("시골 JPA", 10000, 10);
+        Item book = createBook("시골 JPA", 10000, 10, "hello", "123");
 
         int orderCount = 2;
         Long orderId = orderService.order(member.getId(), book.getId(), orderCount);
@@ -70,7 +70,7 @@ class OrderServiceTest {
     void 상품주문_재고수량초과() {
         //  given
         Member member = createMember();
-        Item item = createBook("JPA", 10000, 10);
+        Item item = createBook("JPA", 10000, 10, "hello", "123");
 
         //  when
         int orderCount = 11;
@@ -80,11 +80,8 @@ class OrderServiceTest {
                 () -> orderService.order(member.getId(), item.getId(), orderCount));
     }
 
-    private Book createBook(String name, int price, int stockQuantity) {
-        Book book = new Book();
-        book.setName(name);
-        book.setPrice(price);
-        book.setStockQuantity(stockQuantity);
+    private Book createBook(String name, int price, int stockQuantity, String author, String isbn) {
+        Book book = Book.createBook(name, price, stockQuantity, author, isbn);
         em.persist(book);
         return book;
     }

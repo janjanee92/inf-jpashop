@@ -1,8 +1,11 @@
 package jpabook.jpashop.domain.item;
 
 import jpabook.jpashop.domain.Category;
+import jpabook.jpashop.dto.UpdateItemDTO;
 import jpabook.jpashop.exception.NotEnoughStockException;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -13,6 +16,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype")
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class Item {
 
     @Id
@@ -28,7 +32,6 @@ public abstract class Item {
     private List<Category> categories = new ArrayList<>();
 
     //==비즈니스 로직==//
-
     /**
      * stock 증가
      */
@@ -47,5 +50,13 @@ public abstract class Item {
         this.stockQuantity = restStock;
     }
 
+    /**
+     * 아이템 수정
+     */
+    public void change(UpdateItemDTO dto) {
+        this.price = dto.getPrice();
+        this.name = dto.getName();
+        this.stockQuantity = dto.getStockQuantity();
+    }
 
 }
