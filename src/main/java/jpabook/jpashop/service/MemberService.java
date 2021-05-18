@@ -20,13 +20,13 @@ public class MemberService {
      */
     @Transactional
     public Long join(Member member) {
-        validateDuplicateMember(member);    //  중복 회원 검증
+        validateDuplicateMemberName(member.getName());    //  중복 회원 검증
         memberRepository.save(member);
         return member.getId();
     }
 
-    private void validateDuplicateMember(Member member) {
-        List<Member> findMembers = memberRepository.findByName(member.getName());
+    private void validateDuplicateMemberName(String name) {
+        List<Member> findMembers = memberRepository.findByName(name);
         if (!findMembers.isEmpty()) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
@@ -44,5 +44,17 @@ public class MemberService {
      */
     public Member findOne(Long memberId) {
         return memberRepository.findOne(memberId);
+    }
+
+    /**
+     * 회원 정보 수정
+     * @param id 회원 아이디
+     * @param name 회원이름
+     */
+    @Transactional
+    public void update(Long id, String name) {
+        Member member = memberRepository.findOne(id);
+        validateDuplicateMemberName(name);
+        member.setName(name);
     }
 }
